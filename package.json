@@ -9,9 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^141.0.0",
+    "@sparticuz/chromium": "^138.0.2",
     "next": "16.0.4",
-    "puppeteer-core": "^24.31.0",
+    "puppeteer-core": "^24.16.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
@@ -22,7 +22,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.4",
-    "puppeteer": "^24.31.0",
+    "puppeteer": "^24.16.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
