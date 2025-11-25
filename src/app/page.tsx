@@ -16,42 +16,6 @@ export default function HomePage() {
   const [html, setHtml] = useState(defaultHtml);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const  generatePdf = async (
-  html: string,
-  filename: string,
-  landscape = true,
-) =>  {
-  try {
-    const params = new URLSearchParams();
-    params.set('html', encodeURIComponent(html));
-    // params.set('filename', filename);
-    // params.set('landscape', String(landscape));
-    const apiUrl = `/api/pdf?html=${encodeURIComponent(html)}`
-
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-      throw new Error('Failed to generate PDF');
-    }
-
-    // Download the PDF
-    const blob = await response.blob();
-    const objectUrl = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = objectUrl
-    link.download = filename
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(objectUrl)
-  } catch (error) {
-    console.error('Error generating PDF:', error)
-    throw error
-  }
-}
-
-
   const createPDF = async () => {
     if (!html) {
       setError("Please enter a valid HTML.");
@@ -60,22 +24,21 @@ export default function HomePage() {
     setLoading(true);
     setError(null);
     try {
-      await generatePdf(html, 'test.pdf', false)
-      // const response = await fetch(
-      //   `/api/pdf?html=${encodeURIComponent(html)}`
-      // );
-      // if (!response.ok) {
-      //   throw new Error("Failed to create PDF.");
-      // }
-      // const blob = await response.blob();
-      // const objectUrl = URL.createObjectURL(blob);
-      // const link = document.createElement('a');
-      // link.href = objectUrl;
-      // link.download = 'output.pdf'; // Desired filename
-      // document.body.appendChild(link); // Temporarily add to the DOM
-      // link.click(); // Programmatically click the link to trigger download
-      // document.body.removeChild(link); // Remove the link
-      // URL.revokeObjectURL(objectUrl); // Release the object URL
+      const response = await fetch(
+        `/api/pdf?html=${encodeURIComponent(html)}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to create PDF.");
+      }
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = 'output.pdf'; // Desired filename
+      document.body.appendChild(link); // Temporarily add to the DOM
+      link.click(); // Programmatically click the link to trigger download
+      document.body.removeChild(link); // Remove the link
+      URL.revokeObjectURL(objectUrl); // Release the object URL
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred."
