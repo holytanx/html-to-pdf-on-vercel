@@ -4,6 +4,7 @@ import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 
 export async function POST(request: NextRequest) {
+  let browser;
   try {
     const {
       html,
@@ -14,8 +15,6 @@ export async function POST(request: NextRequest) {
       height = null,
       margins = { top: '8mm', right: '8mm', bottom: '8mm', left: '8mm' }
     } = await request.json()
-
-    let browser;
     const isVercel = !!process.env.VERCEL_ENV;
     const pptr = isVercel ? puppeteer : (await import("puppeteer")) as unknown as typeof puppeteer;
     browser = await pptr.launch(isVercel ? {
