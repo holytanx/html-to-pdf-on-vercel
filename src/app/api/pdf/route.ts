@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
   let browser;
   try {
     const isVercel = !!process.env.VERCEL_ENV;
+    console.log(isVercel)
     const pptr = isVercel ? puppeteer : (await import("puppeteer")) as unknown as typeof puppeteer;
     browser = await pptr.launch(isVercel ? {
       args: chromium.args,
