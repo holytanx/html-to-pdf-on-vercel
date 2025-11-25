@@ -29,7 +29,7 @@ export default function HomePage() {
     params.set('landscape', String(landscape));
     const apiUrl = `/api/pdf?${params.toString()}`;
 
-    const response = await fetch(apiUrl, { method: 'GET' });
+    const response = await fetch(apiUrl);
 
     if (!response.ok) {
       throw new Error('Failed to generate PDF');
