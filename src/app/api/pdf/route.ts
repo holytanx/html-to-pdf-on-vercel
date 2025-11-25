@@ -38,9 +38,8 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage()
 
     // Set content and wait for everything to load
-    await page.setContent(html, {
-      waitUntil: ['networkidle0', 'domcontentloaded'],
-    })
+    await page.setContent(html, { waitUntil: 'load' });
+
 
     // Wait for fonts to load
     await page.evaluateHandle('document.fonts.ready')
