@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
   if (!htmlParam) {
     return new NextResponse("Please provide the HTML.", { status: 400 });
   }
+
+  const remoteExecutablePath = "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
   let browser;
   try {
     const isVercel = !!process.env.VERCEL_ENV;
@@ -15,14 +17,14 @@ export async function GET(request: NextRequest) {
     const pptr = isVercel ? puppeteer : (await import("puppeteer")) as unknown as typeof puppeteer;
     browser = await pptr.launch(isVercel ? {
       args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(remoteExecutablePath),
       headless: true
     } : { 
       headless: true, 
       args: puppeteer.defaultArgs()
     });
     const page = await browser.newPage();
-   await page.setContent(htmlParam, { waitUntil: 'load' });
+    await page.setContent(htmlParam, { waitUntil: 'load' });
     const pdf = await page.pdf({ 
         path: undefined,
         printBackground: true
