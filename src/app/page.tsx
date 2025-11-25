@@ -25,9 +25,9 @@ export default function HomePage() {
   try {
     const params = new URLSearchParams();
     params.set('html', encodeURIComponent(html));
-    params.set('filename', filename);
-    params.set('landscape', String(landscape));
-    const apiUrl = `/api/pdf?${params.toString()}`;
+    // params.set('filename', filename);
+    // params.set('landscape', String(landscape));
+    const apiUrl = `/api/pdf?html=${encodeURIComponent(html)}`
 
     const response = await fetch(apiUrl);
 
