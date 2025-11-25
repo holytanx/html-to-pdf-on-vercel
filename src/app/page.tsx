@@ -23,32 +23,28 @@ export default function HomePage() {
   landscape = true,
 ) =>  {
   try {
-    const response = await fetch('/api/pdf', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        html,
-        filename,
-        landscape,
-      }),
-    })
+    const params = new URLSearchParams();
+    params.set('html', html);
+    params.set('filename', filename);
+    params.set('landscape', String(landscape));
+    const apiUrl = `/api/pdf?${params.toString()}`;
+
+    const response = await fetch(apiUrl, { method: 'GET' });
 
     if (!response.ok) {
-      throw new Error('Failed to generate PDF')
+      throw new Error('Failed to generate PDF');
     }
 
     // Download the PDF
-    const blob = await response.blob()
-    const url = window.URL.createObjectURL(blob)
+    const blob = await response.blob();
+    const objectUrl = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = url
+    link.href = objectUrl
     link.download = filename
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
+    window.URL.revokeObjectURL(objectUrl)
   } catch (error) {
     console.error('Error generating PDF:', error)
     throw error
